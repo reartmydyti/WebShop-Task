@@ -1,0 +1,28 @@
+﻿@model WebshopService.Models.Customer
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Details</h2>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>@Model.Name</dd>
+
+        <dt>Firstname</dt>
+        <dd>@Model.Firstname</dd>
+
+        <dt>Email Address</dt>
+        <dd>@Model.EmailAddress</dd>
+
+        <dt>Address</dt>
+        <dd>@Model.Address.Street @Model.Address.HouseNumber, @Model.Address.City, @Model.Address.State, @Model.Address.Country, @Model.Address.ZipCode</dd>
+
+        <!-- Other fields can be added similarly -->
+    </dl>
+</div>
+<a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit</a> |
+<a asp-action="Index">Back to List</a>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebshopService.Models.Customer>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All Customers</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Firstname</th>
+            <th>Email Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Firstname</td>
+                <td>@item.EmailAddress</td>
+                <td>
+                    <a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Details", "CustomersMVC")">View Details</a>
+                    <a asp-controller="CustomersMVC" asp-action="Details" asp-route-id="@item.CustomerId">Details</a>|
+                    <a asp-controller="CustomersMVC" asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                    <a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Delete", "CustomersMVC")">Delete</a>
+                    <a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Edit", "CustomersMVC")">Edit</a>
+                    <a asp-controller="CustomersMVC" asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create">Create New Customer</a>
+<a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Create", "CustomersMVC")">Create</a>

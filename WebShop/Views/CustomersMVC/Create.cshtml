@@ -1,0 +1,25 @@
+﻿@model WebshopService.Models.Customer
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create New Customer</h2>
+
+<form asp-action="Create">
+    <!-- Input fields for customer properties -->
+    <div class="form-group">
+        <label for="Name">Name:</label>
+        <input type="text" class="form-control" id="Name" name="Name" required />
+    </div>
+    <div class="form-group">
+        <label for="Firstname">Firstname:</label>
+        <input type="text" class="form-control" id="Firstname" name="Firstname" required />
+    </div>
+    <div class="form-group">
+        <label for="EmailAddress">Email Address:</label>
+        <input type="email" class="form-control" id="EmailAddress" name="EmailAddress" required />
+    </div>
+    <!-- Add other fields similarly -->
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

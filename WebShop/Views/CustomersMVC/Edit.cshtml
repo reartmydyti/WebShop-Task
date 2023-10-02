@@ -1,0 +1,47 @@
+﻿@model WebshopService.Models.Customer
+
+<h2>Edit Customer</h2>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Edit">
+    <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
+
+    <div class="form-group">
+        <label for="Name">Name:</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Firstname">Firstname:</label>
+        <input type="text" class="form-control" id="Firstname" name="Firstname" value="@Model.Firstname" required />
+    </div>
+
+    <div class="form-group">
+        <label for="EmailAddress">Email Address:</label>
+        <input type="email" class="form-control" id="EmailAddress" name="EmailAddress" value="@Model.EmailAddress" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Birthdate">Birthdate:</label>
+        <input type="date" class="form-control" id="Birthdate" name="Birthdate" value="@Model.Birthdate.ToString("yyyy-MM-dd")" required />
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+        <label for="Street">Street:</label>
+        <input type="text" class="form-control" id="Street" name="Address.Street" value="@Model.Address.Street" required />
+    </div>
+
+    <div class="form-group">
+        <label for="HouseNumber">House Number:</label>
+        <input type="text" class="form-control" id="HouseNumber" name="Address.HouseNumber" value="@Model.Address.HouseNumber" required />
+    </div>
+
+    <!-- Add other address fields similarly -->
+    <!-- And any other fields you have -->
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
