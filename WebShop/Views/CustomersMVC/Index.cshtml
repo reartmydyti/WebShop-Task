@@ -5,12 +5,18 @@
 
 <h2>All Customers</h2>
 
-<table class="table">
+<table class="table" style="width: 100%;">
     <thead>
         <tr>
+            <td>CustomerId</td>
             <th>Name</th>
             <th>Firstname</th>
             <th>Email Address</th>
+            <th>Address</th>
+            <th>Birthdate</th>
+            <th>Job Title</th>
+            <th>Category</th>
+            <th>Order ID</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -18,21 +24,35 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.CustomerId</td>
                 <td>@item.Name</td>
                 <td>@item.Firstname</td>
                 <td>@item.EmailAddress</td>
+                <td>@item.Address</td>
+                <td>@item.Birthdate.ToShortDateString()</td>
+                <td>@item.JobTitle</td>
+                <td>@item.Category</td>
                 <td>
-                    <a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Details", "CustomersMVC")">View Details</a>
-                    <a asp-controller="CustomersMVC" asp-action="Details" asp-route-id="@item.CustomerId">Details</a>|
-                    <a asp-controller="CustomersMVC" asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                    <a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Delete", "CustomersMVC")">Delete</a>
-                    <a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Edit", "CustomersMVC")">Edit</a>
-                    <a asp-controller="CustomersMVC" asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                    @if (item.Orders != null && item.Orders.Any())
+                    {
+                        @string.Join(", ", item.Orders.Select(o => o.OrderId))
+                    }
+                    else
+                    {
+                        <span>No Orders</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="/CustomersMVC/Details/@item.CustomerId">Details</a>
+                    <a class="btn btn-warning" href="/CustomersMVC/Edit/@item.CustomerId">Edit</a>
+                    <a class="btn btn-danger" href="/CustomersMVC/Delete/@item.CustomerId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Create">Create New Customer</a>
-<a class="btn btn-success mb-4 btn-custom" href="@Url.Action("Create", "CustomersMVC")">Create</a>
+<a class="btn btn-primary" href="/CustomersMVC/Create">Create</a>
+<a class="btn btn-primary" href="/CustomersMVC/FilterCustomers">Filter Customers</a>
+<a class="btn btn-primary" href="/CustomersMVC/GetCustomersByProduct">Get Customers by Product ID</a>
+<a class="btn btn-primary" href="/CustomersMVC/GetCustomersByRegion">Get Customers by Region</a>

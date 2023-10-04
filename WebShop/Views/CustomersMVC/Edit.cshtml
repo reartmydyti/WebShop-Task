@@ -1,11 +1,14 @@
 ﻿@model WebshopService.Models.Customer
+@using WebshopService.Models
+
 
 <h2>Edit Customer</h2>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="Edit">
+<form asp-action="Edit" asp-route-id="@Model.CustomerId" method="post">
+    @Html.AntiForgeryToken()
     <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
 
     <div class="form-group">
@@ -28,20 +31,65 @@
         <input type="date" class="form-control" id="Birthdate" name="Birthdate" value="@Model.Birthdate.ToString("yyyy-MM-dd")" required />
     </div>
 
-    <!-- Address -->
     <div class="form-group">
-        <label for="Street">Street:</label>
-        <input type="text" class="form-control" id="Street" name="Address.Street" value="@Model.Address.Street" required />
+        <label for="JobTitle">Job Title:</label>
+        <input type="text" class="form-control" id="JobTitle" name="JobTitle" value="@Model.JobTitle" required />
+    </div>
+    <div class="form-group">
+        <label for="Category">Category:</label>
+        <select asp-for="Category" class="form-control" name="Category" id="Category">
+            @foreach (var category in Enum.GetValues(typeof(CustomerCategory)))
+            {
+                <option value="@category">@category.ToString().Replace("_", " ")</option>
+            }
+        </select>
     </div>
 
-    <div class="form-group">
-        <label for="HouseNumber">House Number:</label>
-        <input type="text" class="form-control" id="HouseNumber" name="Address.HouseNumber" value="@Model.Address.HouseNumber" required />
-    </div>
 
-    <!-- Add other address fields similarly -->
-    <!-- And any other fields you have -->
+
+    <!-- Address Fields -->
+    @if (Model.Address != null)
+    {
+        <input type="hidden" name="Address.CustomerAddressId" value="@Model.Address.CustomerAddressId" />
+
+        <div class="form-group">
+            <label for="Street">Street:</label>
+            <input type="text" class="form-control" id="Street" name="Address.Street" value="@Model.Address.Street" required />
+        </div>
+
+        <div class="form-group">
+            <label for="HouseNumber">House Number:</label>
+            <input type="text" class="form-control" id="HouseNumber" name="Address.HouseNumber" value="@Model.Address.HouseNumber" required />
+        </div>
+
+        <div class="form-group">
+            <label for="City">City:</label>
+            <input type="text" class="form-control" id="City" name="Address.City" value="@Model.Address.City" required />
+        </div>
+
+        <div class="form-group">
+            <label for="State">State:</label>
+            <input type="text" class="form-control" id="State" name="Address.State" value="@Model.Address.State" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Country">Country:</label>
+            <input type="text" class="form-control" id="Country" name="Address.Country" value="@Model.Address.Country" required />
+        </div>
+
+        <div class="form-group">
+            <label for="ZipCode">ZipCode:</label>
+            <input type="text" class="form-control" id="ZipCode" name="Address.ZipCode" value="@Model.Address.ZipCode" required />
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <label>Address:</label>
+            <p>No address available for this customer.</p>
+        </div>
+    }
 
     <button type="submit" class="btn btn-primary">Update</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a class="btn btn-primary" href="/CustomersMVC">Cancel</a>
 </form>

@@ -1,0 +1,52 @@
+﻿@model List<WebshopService.Models.Customer>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Filter Customers</h2>
+
+<form id="filterForm">
+    <input type="text" id="name" placeholder="Enter name" />
+    <input type="text" id="firstname" placeholder="Enter firstname" />
+    <input type="text" id="email" placeholder="Enter email" />
+    <input type="text" id="category" placeholder="Enter category" />
+    <button type="button" onclick="filterCustomers()">Filter</button>
+</form>
+
+<table id="filteredCustomers" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data will be populated by JS -->
+    </tbody>
+</table>
+
+<script>
+    function filterCustomers() {
+        var name = document.getElementById('name').value;
+        var firstname = document.getElementById('firstname').value;
+        var email = document.getElementById('email').value;
+        var category = document.getElementById('category').value;
+
+        fetch(`/api/Customers/filter?name=${name}&firstname=${firstname}&email=${email}&category=${category}`)
+            .then(response => response.json())
+            .then(data => {
+                var table = document.getElementById('filteredCustomers').getElementsByTagName('tbody')[0];
+                table.innerHTML = ''; // Clear previous results
+
+                data.forEach(customer => {
+                    var row = table.insertRow();
+                    row.insertCell(0).innerHTML = customer.name;
+                    row.insertCell(1).innerHTML = customer.firstname;
+                    row.insertCell(2).innerHTML = customer.emailAddress;
+                    row.insertCell(3).innerHTML = customer.category;
+                });
+            });
+    }
+</script>
