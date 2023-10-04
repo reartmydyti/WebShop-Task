@@ -17,7 +17,10 @@ namespace WebShop.Controllers.MVC
         // INDEX: List all customers
         public async Task<IActionResult> Index()
         {
-            var customers = await _context.Customers.Include(c => c.Address).ToListAsync();
+            var customers = await _context.Customers
+                .Include(c => c.Address)
+                .Include(c => c.Orders)
+                .ToListAsync();
             return View(customers);
         }
 
@@ -43,19 +46,36 @@ namespace WebShop.Controllers.MVC
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Customer customer)
         {
-            if (ModelState.IsValid)
+            Console.WriteLine($"Received Category: {customer.Category}");
+            if (!ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Log or handle the validation errors here
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage); // logging the errors to the console
+                    }
+                }
+                return View(customer);  // Return to the view to show errors and correct them
             }
-            return View(customer);
+
+            if (customer.Address == null)
+            {
+                customer.Address = new CustomerAddress();
+            }
+            _context.Add(customer);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
+
 
         // EDIT GET: Display customer edit form
         public async Task<IActionResult> Edit(Guid id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Customers
+                                .Include(c => c.Address) // Eager load the Address
+                                .FirstOrDefaultAsync(c => c.CustomerId == id);
             if (customer == null)
             {
                 return NotFound();
@@ -122,5 +142,21 @@ namespace WebShop.Controllers.MVC
         {
             return _context.Customers.Any(e => e.CustomerId == id);
         }
+
+        public IActionResult FilterCustomers()
+        {
+            return View();
+        }
+
+        public IActionResult GetCustomersByRegion()
+        {
+            return View();
+        }
+
+        public IActionResult GetCustomersByProduct()
+        {
+            return View();
+        }
+
     }
 }
