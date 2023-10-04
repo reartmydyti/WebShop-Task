@@ -7,9 +7,10 @@ namespace WebShop.Models
     {
         public Guid OrderId { get; set; }
         public Guid CustomerId { get; set; }
-        //[JsonIgnore]
-        //public Customer Customer { get; set; }  
-        public string AdditionalInfo { get; set; }
-        public List<Product> Products { get; set; }
+        [JsonIgnore]
+        public Customer? Customer { get; set; }  
+        public string? AdditionalInfo { get; set; }
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
-}
+
+    }
