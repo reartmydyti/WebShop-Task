@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "New Customers' Orders";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<button id="fetchOrdersBtn">Fetch New Customers' Orders</button>
+
+<!-- The table to display the orders -->
+<table id="ordersTable" border="1" class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer ID</th>
+            <th>Additional Info</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+    <script>
+        document.getElementById("fetchOrdersBtn").addEventListener("click", async () => {
+            try {
+                const response = await fetch('/api/Orders/newcustomers');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const orders = await response.json();
+
+                const ordersTableBody = document.querySelector("#ordersTable tbody");
+                ordersTableBody.innerHTML = ""; // Clear the table body
+
+                for (let order of orders) {
+                    const row = document.createElement("tr");
+
+                    const orderIdCell = document.createElement("td");
+                    orderIdCell.textContent = order.orderId;
+                    row.appendChild(orderIdCell);
+
+                    const customerIdCell = document.createElement("td");
+                    customerIdCell.textContent = order.customerId;
+                    row.appendChild(customerIdCell);
+
+                    const infoCell = document.createElement("td");
+                    infoCell.textContent = order.additionalInfo;
+                    row.appendChild(infoCell);
+
+                    ordersTableBody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error("There was a problem with the fetch operation:", error.message);
+            }
+        });
+    </script>
+}
