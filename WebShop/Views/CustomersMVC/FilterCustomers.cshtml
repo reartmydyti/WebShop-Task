@@ -9,7 +9,16 @@
     <input type="text" id="name" placeholder="Enter name" />
     <input type="text" id="firstname" placeholder="Enter firstname" />
     <input type="text" id="email" placeholder="Enter email" />
-    <input type="text" id="category" placeholder="Enter category" />
+
+    <!-- Dropdown list for Category -->
+    <select id="categoryDropdown">
+        <option value="">Select a category</option>
+        <option value="NEW_CUSTOMER">New Customer</option>
+        <option value="EXISTING_CUSTOMER">Existing Customer</option>
+        <option value="INACTIVE_CUSTOMER">Inactive Customer</option>
+        <!-- Add other categories as needed -->
+    </select>
+
     <button type="button" onclick="filterCustomers()">Filter</button>
 </form>
 
@@ -32,7 +41,10 @@
         var name = document.getElementById('name').value;
         var firstname = document.getElementById('firstname').value;
         var email = document.getElementById('email').value;
-        var category = document.getElementById('category').value;
+
+        // Get the selected value from the dropdown list
+        var categoryDropdown = document.getElementById('categoryDropdown');
+        var category = categoryDropdown.options[categoryDropdown.selectedIndex].value;
 
         fetch(`/api/Customers/filter?name=${name}&firstname=${firstname}&email=${email}&category=${category}`)
             .then(response => response.json())

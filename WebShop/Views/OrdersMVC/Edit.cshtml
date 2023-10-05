@@ -10,9 +10,18 @@
     @Html.AntiForgeryToken()
     <input type="hidden" name="OrderId" value="@Model.OrderId" />
 
+    <!-- Customer Dropdown -->
     <div class="form-group">
-        <label for="CustomerId">Customer ID:</label>
-        <input type="text" class="form-control" id="CustomerId" name="CustomerId" value="@Model.CustomerId" required />
+        <label for="CustomerId">Customer:</label>
+        <select class="form-control" id="CustomerId" name="CustomerId" required>
+            @foreach (var customer in (List<Customer>)ViewBag.Customers)
+            {
+                <option value="@customer.CustomerId"
+                @(Model.CustomerId == customer.CustomerId ? "selected" : "")>
+                    @customer.Name, @customer.Firstname, @customer.EmailAddress
+                </option>
+            }
+        </select>
     </div>
 
     <div class="form-group">

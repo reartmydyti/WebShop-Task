@@ -95,7 +95,7 @@ namespace WebshopService.Controllers
             }
 
             var orders = await _context.Orders
-                                       .Include(o => o.Customer)  // This line includes the related Customer data
+                                       .Include(o => o.Customer) 
                                        .Include(o => o.Products)
                                        .Where(o => o.CustomerId == customerId.Value)
                                        .ToListAsync();

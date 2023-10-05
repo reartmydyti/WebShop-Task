@@ -91,6 +91,7 @@ namespace WebShop.Controllers.MVC
             }
 
             ViewBag.AllProducts = await _context.Products.ToListAsync();
+            ViewBag.Customers = await _context.Customers.ToListAsync();
 
             return View(order);
         }
