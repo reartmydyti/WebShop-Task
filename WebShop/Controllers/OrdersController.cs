@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using WebShop.Models;
 using WebshopService.Data;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using WebshopService.Models;
 
 namespace WebshopService.Controllers
 {
@@ -33,7 +37,10 @@ namespace WebshopService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = await _context.Orders.Include(o => o.Products).ToListAsync();
+            var orders = await _context.Orders
+                .Include(o => o.Products)
+                .Include(o => o.Customer)
+                .ToListAsync();
             return Ok(orders);
         }
 
@@ -77,5 +84,47 @@ namespace WebshopService.Controllers
 
             return NoContent();
         }
+
+        // Get orders for a specific customer
+        [HttpGet("GetOrdersByCustomerId")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByCustomerId(Guid? customerId)
+        {
+            if (!customerId.HasValue)
+            {
+                return BadRequest("Customer ID is required.");
+            }
+
+            var orders = await _context.Orders
+                                       .Include(o => o.Customer) 
+                                       .Include(o => o.Products)
+                                       .Where(o => o.CustomerId == customerId.Value)
+                                       .ToListAsync();
+
+            if (!orders.Any())
+            {
+                return NotFound($"No orders found for Customer ID: {customerId.Value}");
+            }
+
+            return Ok(orders);
+        }
+
+
+
+
+        // NEW: Get orders placed by customers with the state NEW_CUSTOMER
+        [HttpGet("newcustomers")]
+        public async Task<IActionResult> GetOrdersByNewCustomers()
+        {
+            var orders = await _context.Orders
+                .Include(o => o.Customer)
+                .Where(o => o.Customer.Category == CustomerCategory.NEW_CUSTOMER)
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
+
+
+
     }
 }

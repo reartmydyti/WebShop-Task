@@ -16,7 +16,6 @@ namespace WebshopService.Controllers
             _context = context;
         }
 
-        // CREATE: New product
         [HttpPost]
         public async Task<IActionResult> CreateProduct(Product product)
         {
@@ -25,58 +24,51 @@ namespace WebshopService.Controllers
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction(nameof(GetProductById), new { id = product.ProductId }, product);
         }
 
-        // READ: Get all products
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
-        {
-            var products = await _context.Products.ToListAsync();
-            return Ok(products);
-        }
+        public async Task<IActionResult> GetAllProducts() =>
+            Ok(await _context.Products.ToListAsync());
 
-        // READ: Get a single product by ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await FindProductById(id);
             if (product == null)
                 return NotFound();
 
             return Ok(product);
         }
 
-        // UPDATE: Update a product
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(Guid id, Product updatedProduct)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await FindProductById(id);
             if (product == null)
                 return NotFound();
 
             product.Label = updatedProduct.Label;
             product.Description = updatedProduct.Description;
             product.Price = updatedProduct.Price;
-
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // DELETE: Delete a product
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await FindProductById(id);
             if (product == null)
                 return NotFound();
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
+
+        private async Task<Product> FindProductById(Guid id) =>
+            await _context.Products.FindAsync(id);
     }
 }

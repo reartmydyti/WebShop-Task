@@ -1,8 +1,12 @@
 ﻿@model WebshopService.Models.Product
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <h2>Add New Product</h2>
 
-<form asp-action="Create">
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <label for="Label">Label:</label>
         <input type="text" class="form-control" id="Label" name="Label" required />
@@ -19,5 +23,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Add Product</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a class="btn btn-success" href="/ProductsMVC">Go Back</a>
 </form>

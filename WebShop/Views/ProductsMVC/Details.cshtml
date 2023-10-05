@@ -1,4 +1,7 @@
 ﻿@model WebshopService.Models.Product
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <h2>Product Details</h2>
 
@@ -13,4 +16,4 @@
     <dd class="col-sm-10">@Model.Price</dd>
 </dl>
 
-<a asp-action="Index" class="btn btn-primary">Back to Products List</a>
+<a class="btn btn-primary" href="/ProductsMVC">Cancel</a>

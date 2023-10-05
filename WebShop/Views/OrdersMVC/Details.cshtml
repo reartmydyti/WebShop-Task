@@ -1,4 +1,7 @@
 ﻿@model WebShop.Models.Order
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <h2>Order Details</h2>
 
@@ -14,7 +17,11 @@
 
         <dt>Additional Info</dt>
         <dd>@Model.AdditionalInfo</dd>
+
     </dl>
 </div>
-<a asp-action="Edit" asp-route-id="@Model.OrderId">Edit</a> |
-<a asp-action="Index">Back to List</a>
+<div>
+    <a class="btn btn-success" href="/OrdersMVC/Edit/@Model.OrderId">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.OrderId" class="btn btn-danger">Delete</a>
+    <a class="btn btn-success" href="/OrdersMVC">Back</a>
+</div>

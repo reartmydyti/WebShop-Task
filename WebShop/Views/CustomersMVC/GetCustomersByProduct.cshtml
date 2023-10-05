@@ -1,0 +1,69 @@
+﻿@model List<WebshopService.Models.Customer>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search Customers by Product ID</h2>
+
+<!-- Form for product ID -->
+<form id="productForm">
+    <input type="text" id="productId" placeholder="Enter Product ID" />
+    <button type="button" onclick="getCustomersByProduct()">Search</button>
+</form>
+
+<!-- Table to display results -->
+<table id="productCustomers" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Firstname</th>
+            <th>Email</th>
+            <!-- Add other relevant columns -->
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Filled dynamically using JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    function getCustomersByProduct() {
+        var productId = document.getElementById('productId').value;
+        
+        // Clear previous data if any
+        document.getElementById('productCustomers').getElementsByTagName('tbody')[0].innerHTML = "";
+
+        fetch(`/api/Customers/byproduct/${productId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                populateTable(data);
+            })
+            .catch(error => {
+                console.log('There was a problem with the fetch operation:', error.message);
+            });
+    }
+
+    function populateTable(customers) {
+        const tbody = document.getElementById('productCustomers').getElementsByTagName('tbody')[0];
+
+        customers.forEach(customer => {
+            const row = tbody.insertRow();
+            
+            const nameCell = row.insertCell(0);
+            nameCell.textContent = customer.name;
+            
+            const firstnameCell = row.insertCell(1);
+            firstnameCell.textContent = customer.firstname;
+            
+            const emailCell = row.insertCell(2);
+            emailCell.textContent = customer.emailAddress;
+
+            
+        });
+    }
+</script>

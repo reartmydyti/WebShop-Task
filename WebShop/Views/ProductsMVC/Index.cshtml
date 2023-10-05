@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WebshopService.Models.Product>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products List</h2>
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Label</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductId</td>
+                <td>@product.Label</td>
+                <td>@product.Description</td>
+                <td>@product.Price</td>
+                <td>
+                    <a class="btn btn-primary" href="/ProductsMVC/Details/@product.ProductId">Details</a>
+                    <a class="btn btn-warning" href="/ProductsMVC/Edit/@product.ProductId">Edit</a>
+                    <a class="btn btn-danger" href="/ProductsMVC/Delete/@product.ProductId">Delete</a>
+                </td>
+                <td><a class="btn btn-info" href="/OrdersMVC/CreateCustomerOrderForProduct/@product.ProductId">Order</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-success" href="/ProductsMVC/Create">Add New Product</a>

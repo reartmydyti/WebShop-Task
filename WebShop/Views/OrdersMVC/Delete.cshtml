@@ -1,11 +1,15 @@
 ﻿@model WebShop.Models.Order
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <h2>Delete Order</h2>
 
 <p>Are you sure you want to delete this order?</p>
 
 <form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" name="OrderId" value="@Model.OrderId" />
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="OrderId" />
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a class="btn btn-success" href="/OrdersMVC">Cancel</a>
 </form>

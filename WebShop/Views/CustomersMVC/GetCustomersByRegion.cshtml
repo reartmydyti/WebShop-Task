@@ -1,0 +1,82 @@
+﻿@model List<WebshopService.Models.Customer>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search Customers by Region</h2>
+
+<!-- Form for region details -->
+<form id="regionForm">
+    <input type="text" id="city" placeholder="Enter City" />
+    <input type="text" id="country" placeholder="Enter Country" />
+    <input type="text" id="state" placeholder="Enter State" />
+    <button type="button" onclick="getCustomersByRegion()">Search</button>
+</form>
+
+<!-- Table to display results -->
+<table id="regionCustomers" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Firstname</th>
+            <th>Email</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Filled dynamically using JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    function getCustomersByRegion() {
+        var city = document.getElementById('city').value;
+        var country = document.getElementById('country').value;
+        var state = document.getElementById('state').value;
+
+        // Clear previous data if any
+        document.getElementById('regionCustomers').getElementsByTagName('tbody')[0].innerHTML = "";
+
+        fetch(`/api/Customers/region?city=${city}&country=${country}&state=${state}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                populateTable(data);
+            })
+            .catch(error => {
+                console.log('There was a problem with the fetch operation:', error.message);
+            });
+    }
+
+    function populateTable(customers) {
+        const tbody = document.getElementById('regionCustomers').getElementsByTagName('tbody')[0];
+
+        customers.forEach(customer => {
+            const row = tbody.insertRow();
+
+            const nameCell = row.insertCell(0);
+            nameCell.textContent = customer.name;
+
+            const firstnameCell = row.insertCell(1);
+            firstnameCell.textContent = customer.firstname;
+
+            const emailCell = row.insertCell(2);
+            emailCell.textContent = customer.emailAddress;
+
+            const cityCell = row.insertCell(3);
+            cityCell.textContent = customer.address.city; 
+
+            const countryCell = row.insertCell(4);
+            countryCell.textContent = customer.address.country;
+
+            const stateCell = row.insertCell(5);
+            stateCell.textContent = customer.address.state; 
+        });
+    }
+</script>
